@@ -15,7 +15,6 @@ class NewMovie(models.Model):
     votes 투표수
     created_at 이 객체가 생성된 시간
     released_date 개봉 날짜
-    movie_owner 이 영화를 가지고 있는 업체 (ManyToManyField 로 through 클래스로 구현)
     genre_set ManyToManyField(to='Genre')
 
     """
