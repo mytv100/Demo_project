@@ -1,0 +1,162 @@
+{% load staticfiles %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>명화 극장</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href='{% static "movie/vendor/bootstrap/css/bootstrap.min.css" %}' rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href='{% static "movie/css/modern-business.css" %}' rel="stylesheet">
+
+
+</head>
+
+<body>
+
+<!-- Navigation -->
+<nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <div class="container">
+        <a class="navbar-brand" href="{% url 'movie:index' %}">명화 극장</a>
+        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse"
+                data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false"
+                aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="{% url 'movie:index' %}">Home
+                        <span class="sr-only">(current)</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'movie:index' %}">About</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'movie:index' %}">Services</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'movie:index' %}">Contact</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- Page Content -->
+<div class="container">
+
+    <!-- Page Heading/Breadcrumbs -->
+    <h1 class="mt-4 mb-3">명화 극장
+        <small>장르별</small>
+    </h1>
+
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a href="index.html">Home</a>
+        </li>
+        <li class="breadcrumb-item active">{{ genre }}</li>
+    </ol>
+
+    <!-- Content Row -->
+    <div class="row">
+        <!-- Sidebar Column -->
+        <div class="col-lg-3 mb-4">
+            <div class="list-group">
+                <a href="{% url 'movie:list' "Action" %}" class="list-group-item">Action</a>
+                <a href="{% url 'movie:list' "Adult" %}" class="list-group-item">Adult</a>
+                <a href="{% url 'movie:list' "Adventure" %}" class="list-group-item">Adventure</a>
+                <a href="{% url 'movie:list' "Animation" %}" class="list-group-item">Animation</a>
+                <a href="{% url 'movie:list' "Biography" %}" class="list-group-item">Biography</a>
+                <a href="{% url 'movie:list' "Comedy" %}" class="list-group-item">Comedy</a>
+                <a href="{% url 'movie:list' "Crime" %}" class="list-group-item">Crime</a>
+                <a href="{% url 'movie:list' "Documentary" %}" class="list-group-item">Documentary </a>
+                <a href="{% url 'movie:list' "Drama" %}" class="list-group-item">Drama</a>
+                <a href="{% url 'movie:list' "Family" %}" class="list-group-item">Family</a>
+                <a href="{% url 'movie:list' "History" %}" class="list-group-item">History</a>
+                <a href="{% url 'movie:list' "Horror" %}" class="list-group-item">Horror</a>
+                <a href="{% url 'movie:list' "Music" %}" class="list-group-item">Music</a>
+                <a href="{% url 'movie:list' "Musical" %}" class="list-group-item">Musical</a>
+                <a href="{% url 'movie:list' "Mystery" %}" class="list-group-item">Mystery</a>
+                <a href="{% url 'movie:list' "Romance" %}" class="list-group-item">Romance</a>
+                <a href="{% url 'movie:list' "Sci-Fi" %}" class="list-group-item">Sci-Fi</a>
+                <a href="{% url 'movie:list' "Sport" %}" class="list-group-item">Sport</a>
+                <a href="{% url 'movie:list' "Thriller" %}" class="list-group-item">Thriller</a>
+                <a href="{% url 'movie:list' "War" %}" class="list-group-item">War</a>
+                <a href="{% url 'movie:list' "Western" %}" class="list-group-item">Western</a>
+            </div>
+        </div>
+        <!-- Content Column -->
+        <div class="col-lg-9 mb-4">
+            <!-- Page Content -->
+            <div class="container">
+
+                <!-- Page Heading/Breadcrumbs -->
+                <div class="row">
+                    {% for movie in contacts %}
+                        <div class="col-lg-3 col-md-4 col-sm-6 portfolio-item">
+                            <div class="card h-100">
+                                <img style="width:100%; height:30%" class="card-img-top img-fluid" src="{% static "" %}movie/img/{{ movie.title }}.jpg"
+                                     onerror='this.src="{% static "" %}movie/img/no-image-available.jpg"' alt="">
+                                <div class="card-body">
+                                    <h4 class="card-title">
+                                        <a href="{% url 'movie:detail' movie.id %}">{{ movie.title }}</a>
+                                    </h4>
+                                    <h5>{{ movie.director }}</h5>
+                                    <p class="card-text">{{ movie.description }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+
+                </div>
+
+
+                <!-- Pagination -->
+                <ul class="pagination justify-content-center">
+                    {% if contacts.has_previous %}
+                        <li class="page-item"><a class="page-link" href="?page={{ contacts.previous_page_number }}">
+                            prev </a></li>
+                    {% endif %}
+                    <li class="page-item"><a class="page-link" href="#"> Page {{ contacts.number }}
+                        of {{ contacts.paginator.num_pages }} </a></li>
+                    {% if contacts.has_next %}
+                        <li class="page-item"><a class="page-link" href="?page={{ contacts.next_page_number }}">
+                            next </a></li>
+                    {% endif %}
+                </ul>
+
+            </div>
+        </div>
+    </div>
+    <!-- /.row -->
+
+</div>
+<!-- /.container -->
+
+<!-- Footer -->
+<footer class="py-5 bg-dark">
+    <div class="container">
+        <p class="m-0 text-center text-white">Copyright &copy; 명화 극장 2019</p>
+    </div>
+    <!-- /.container -->
+</footer>
+
+
+<!-- Bootstrap core JavaScript -->
+<link href='{% static "movie/vendor/jquery/jquery.min.js" %}' rel="stylesheet">
+<link href='{% static "movie/vendor/bootstrap/js/bootstrap.bundle.min.js" %}' rel="stylesheet">
+
+</body>
+
+</html>

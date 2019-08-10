@@ -1,0 +1,160 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>명화 극장</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href='{% static "movie/vendor/bootstrap/css/bootstrap.min.css" %}' rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href='{% static "movie/css/shop-homepage.css" %}' rel="stylesheet">
+
+    <script src='{% static "movie/vendor/jquery/jquery.min.js" %}'></script>
+    <script src='{% static "movie/vendor/bootstrap/js/bootstrap.min.js" %}'></script>
+
+</head>
+
+<body>
+
+<!-- Navigation -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <div class="container">
+        <a class="navbar-brand" href="{% url 'movie:index' %}">명화 극장</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
+                aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="{% url 'movie:index' %}">Home
+                        <span class="sr-only">(current)</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'movie:index' %}">About</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'movie:index' %}">Services</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'movie:index' %}">Contact</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- Page Content -->
+<div class="container">
+
+    <div class="row">
+        <div class="col-lg-3">
+            <h1 class="my-4">장르</h1>
+            <div class="list-group">
+                <a href="{% url 'movie:list' "Action" %}" class="list-group-item">Action</a>
+                <a href="{% url 'movie:list' "Adult" %}" class="list-group-item">Adult</a>
+                <a href="{% url 'movie:list' "Adventure" %}" class="list-group-item">Adventure</a>
+                <a href="{% url 'movie:list' "Animation" %}" class="list-group-item">Animation</a>
+                <a href="{% url 'movie:list' "Biography" %}" class="list-group-item">Biography</a>
+                <a href="{% url 'movie:list' "Comedy" %}" class="list-group-item">Comedy</a>
+                <a href="{% url 'movie:list' "Crime" %}" class="list-group-item">Crime</a>
+                <a href="{% url 'movie:list' "Documentary" %}" class="list-group-item">Documentary </a>
+                <a href="{% url 'movie:list' "Drama" %}" class="list-group-item">Drama</a>
+                <a href="{% url 'movie:list' "Family" %}" class="list-group-item">Family</a>
+                <a href="{% url 'movie:list' "History" %}" class="list-group-item">History</a>
+                <a href="{% url 'movie:list' "Horror" %}" class="list-group-item">Horror</a>
+                <a href="{% url 'movie:list' "Music" %}" class="list-group-item">Music</a>
+                <a href="{% url 'movie:list' "Musical" %}" class="list-group-item">Musical</a>
+                <a href="{% url 'movie:list' "Mystery" %}" class="list-group-item">Mystery</a>
+                <a href="{% url 'movie:list' "Romance" %}" class="list-group-item">Romance</a>
+                <a href="{% url 'movie:list' "Sci-" %}" class="list-group-item">Sci-Fi</a>
+                <a href="{% url 'movie:list' "Sport" %}" class="list-group-item">Sport</a>
+                <a href="{% url 'movie:list' "Thriller" %}" class="list-group-item">Thriller</a>
+                <a href="{% url 'movie:list' "War" %}" class="list-group-item">War</a>
+                <a href="{% url 'movie:list' "Western" %}" class="list-group-item">Western</a>
+            </div>
+        </div>
+        <!-- /.col-lg-3 -->
+
+        <div class="col-lg-9">
+            {% if movie %}
+                <div class="card mt-4">
+                <img style="width:100%; height: 500px" src="{% static "" %}movie/img/{{ movie.title }}.jpg"
+                     onerror='this.src="{% static "" %}movie/img/no-image-available.jpg"' alt="">
+                <div class="card-body">
+                <h3 class="card-title">{{ movie.title }}</h3>
+                <p class="card-text">{{ movie.description }}</p>
+                <p> {{ movie.director }}</p>
+                {#                        <span class="text-warning">&#9733; &#9733; &#9733; &#9733; &#9734;</span>#}
+                {#                        4.0 stars#}
+            {% else %}
+                <p> No </p>
+            {% endif %}
+            </div>
+            </div>
+            <!-- /.card -->
+
+            <div class="card card-outline-secondary my-4">
+                <div class="card-header">
+                    추천 영화
+                </div>
+                <div class="card-body">
+                    {% if recommended_movie %}
+                        {% for movie in recommended_movie %}
+                            <div>
+                                <div style="float:left">
+                                    <img style='width:70px;height:130px'
+                                         src="{% static "" %}movie/img/{{ movie.title }}.jpg"
+                                         onerror='this.src="{% static "" %}movie/img/no-image-available.jpg"'
+                                         alt="">
+                                </div>
+                                <div style="margin: 2px; margin-left: 5px">
+                                    <h4>{{ movie.title }}</h4>
+                                    <p>{{ movie.description }}</p>
+                                    <small class="text-muted">{{ movie.director }}</small>
+                                    <hr>
+                                </div>
+                            </div>
+                            {#                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Omnis et enim aperiam inventore,#}
+                            {#                        similique necessitatibus neque non! Doloribus, modi sapiente laboriosam aperiam fugiat laborum.#}
+                            {#                        Sequi mollitia, necessitatibus quae sint natus.</p>#}
+                            {#                    <small class="text-muted">Posted by Anonymous on 3/1/17</small>#}
+                            {#                    <hr>#}
+                        {% endfor %}
+                    {% else %}
+                        <p> No </p>
+                    {% endif %}
+                </div>
+            </div>
+            <!-- /.card -->
+
+        </div>
+        <!-- /.col-lg-9 -->
+    </div>
+</div>
+<!-- /.container -->
+
+<!-- Footer -->
+<footer class="py-5 bg-dark">
+    <div class="container">
+        <p class="m-0 text-center text-white">Copyright &copy; 명화 극장 2019</p>
+    </div>
+    <!-- /.container -->
+</footer>
+
+<!-- Bootstrap core JavaScript -->
+<link href='{% static "movie/vendor/jquery/jquery.min.js" %}' rel="stylesheet">
+<link href='{% static "movie/vendor/bootstrap/js/bootstrap.bundle.min.js" %}' rel="stylesheet">
+
+</body>
+
+</html>
