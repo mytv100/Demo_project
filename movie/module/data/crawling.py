@@ -50,16 +50,12 @@ for line in file.readlines():
 
     # 이미지 카운트 (이미지 저장할 때 사용하기 위해서)
     counter = 0
-    succounter = 0
 
     # div태그에서 class name이 rg_meta인 것을 찾아온다
     for x in browser.find_elements_by_xpath('//div[contains(@class,"rg_meta")]'):
         # 3개까지만
         if counter == 3:
             break
-        print('Total Count:', counter)
-        print('Succsessful Count:', succounter)
-        print('URL:', json.loads(x.get_attribute('innerHTML'))['ou'])
 
         # 이미지 url
         img = json.loads(x.get_attribute('innerHTML'))['ou']
@@ -75,11 +71,9 @@ for line in file.readlines():
                         + movie + '/' + movie + '_' + str(counter) + '.' + imgtype, 'wb')
             File.write(r)
             File.close()
-            succounter = succounter + 1
         except:
             print("can't get img")
 
         counter = counter + 1
 
-    print(succounter, 'succesfully downloaded')
     browser.close()
