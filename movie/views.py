@@ -9,62 +9,80 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 from django.shortcuts import render
 
-from django.views import View
-
 # Create your views here.
-from movie.models import Customer, Movie, CustomerMovie
+from movie.models import NewMovie, NewCustomer, Ratings, Genre
 
-""" 
-Movie.objects.all().delete()
-    url = 'http://101.101.167.97:8000/movie-recommend/businessPartnerMovie'
-    content = urllib.request.urlopen(url).read().decode('utf-8')
-    temp = json.loads(content)
-    for i in temp:
-        if Movie.objects.filter(title=i['title'], director=i['director']).exists():
-            continue
-        Movie.objects.create(movie_pk=i['movie_pk'],title=i['title'], genre=i['genre'],
-                             description=i['description'], rate=i['rate'], votes=i['votes'],
-                             running_time=i['running_time'], director=i['director'])
+"""
+# 장르 데이터
+f = open('movie/module/data/ml-100k/u.genre', 'rb')
+genre_list = []
+for line in f.readlines():
+    string = line.decode('ISO-8859-1')
+    string_list = string.split('|')
+    Genre.objects.create(name=string_list[0])
+    genre_list.append(string_list[0])
+    if string_list[0] == 'Western':
+        break
+f.close()
 
-    url2 = 'http://101.101.167.97:8000/movie-recommend/customerMovie'
-    content = urllib.request.urlopen(url2).read().decode('utf-8')
-    temp = json.loads(content)
-    for i in temp:
-        movie = Movie.objects.get(title=i['title'], director=i['director'])
-        customer = Customer.objects.get(nickname=i['nickname'])
-        CustomerMovie.objects.create(movie_id=movie.id, customer_id=customer.id, rate=i['rate'])
+# url = 'http://101.101.167.97:8000/movie-recommend/businessPartnerMovie'
+url = 'http://127.0.0.1:8000/movie-recommend/movie'
+content = urllib.request.urlopen(url).read().decode('utf-8')
+temp = json.loads(content)
+for i in temp:
+    if NewMovie.objects.filter(id=i['id']).exists():
+        continue
+    movie = NewMovie.objects.create(id=i['id'], title=i['title'],
+                                    description=i['description'], rate=i['rate'], votes=i['votes'],
+                                    released_date=i['released_date'])
+    for genre in i['genre_set']:
+        g = Genre.objects.get(name=genre)
+        movie.genre_set.add(g)
+url = 'http://127.0.0.1:8000/movie-recommend/customer'
+content = urllib.request.urlopen(url).read().decode('utf-8')
+temp = json.loads(content)
+for i in temp:
+    if NewCustomer.objects.filter(id=i['id']).exists():
+        continue
+    NewCustomer.objects.create(id=i['id'], age=i['age'], gender=i['gender'], occupation=i['occupation'])
 
-url = "http://101.101.167.97:8000/movie-recommend/customer/"
-    # url = "http://101.101.167.97:8000/api/doc/"
-    content = urllib.request.urlopen(url).read().decode('utf-8')
-    # # str -> list
-    temp = json.loads(content)
-    gender = 0
-    for i in temp:
-        if i['gender'] == 'man':
-            gender = True
-        else:
-            gender = False
-        Customer.objects.create(gender=gender, age=i['age'], nickname=i['nickname'])
-        
-    
+# 평점 데이터
+f = open('movie/module/data/ml-100k/u.data', 'rb')
+
+for line in f.readlines():
+    string = line.decode('ISO-8859-1')
+    string_list = string.split("\t")
+    Ratings.objects.create(customer_id=string_list[0], movie_id=string_list[1], rate=string_list[2])
+
+f.close()
+
+return render(None)
+
+
 """
 
 
 def index(request):
-    movies = Movie.objects.order_by('-votes').order_by('-rate')[:4]
+    movies = NewMovie.objects.order_by('-rate').order_by('-votes')[:4]
     context = {'movies': movies}
     return render(request, 'movie/index.html', context)
 
 
 def main(request):
-    movies = Movie.objects.order_by('-votes').order_by('-rate')[:6]
-    context = {'movies': movies}
+    genre_list = []
+    genres = Genre.objects.values_list('name')
+    for g in genres:
+        genre_list.append(str(g).strip("(',')").strip('""'))
+    genre_list.remove('unknown')
+
+    movies = NewMovie.objects.order_by('-rate').order_by('-votes')[:6]
+    context = {'movies': movies, 'genres': genre_list}
     return render(request, "movie/main.html", context)
 
 
 def list(request, genre):
-    movies = Movie.objects.filter(genre=genre)
+    # 장르별 출력
+    movies = NewMovie.objects.filter(genre=genre)
     # item number per page
     num_page = 8
     paginator = Paginator(movies, num_page)
@@ -82,18 +100,18 @@ def list(request, genre):
     return render(request, "movie/sidebar.html", context)
 
 
-def detail(request, movie_id):
+# 고객정보 넘겨주는거확인
+def detail(request, movie_id, customer_id):
     try:
-        movie = Movie.objects.get(pk=movie_id)
-    except Movie.objects.DoesNotExsit:
+        movie = NewMovie.objects.get(pk=movie_id)
+        customer = NewCustomer.objects.get(pk=customer_id)
+    except NewMovie.objects.DoesNotExsit:
         raise Http404("Movie does not exist")
 
-    str = movie.title + "/" + movie.director
-    query = urllib.parse.quote(str)
+    str = customer.id + "/" + movie.id + "/"
+    # query = urllib.parse.quote(str)
     # url = 'http://101.101.167.97:8000/movie-recommend/customerMovie/' + query + '/customer1/movie_list/'
-    url = 'http://localhost:8000/movie-recommend/customerMovie/' + query + '/customer1/movie_list/'
-
-
+    url = 'http://localhost:8000/movie-recommend/recommend' + str  # query
 
     content = urllib.request.urlopen(url).read().decode('utf-8')
     temp = json.loads(content)
@@ -105,8 +123,9 @@ def detail(request, movie_id):
             break
 
     movie_list = []
+    # 장르부분확인
     for j in recommend_list:
-        if movie.genre in j['genre'] and len(movie_list)!=3:
+        if movie.genre in j['genre'] and len(movie_list) != 3:
             movie_list.append(j)
 
     for k in range(3 - len(movie_list)):
