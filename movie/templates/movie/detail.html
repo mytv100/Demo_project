@@ -88,8 +88,8 @@
         <div class="col-lg-9">
             {% if movie %}
                 <div class="card mt-4">
-                <img style="width:100%; height: 500px" src="{% static "" %}movie/img/{{ movie.title }}.jpg"
-                     onerror='this.src="{% static "" %}movie/img/no-image-available.jpg"' alt="">
+                <img style="width:100%; height: 500px" src="{% static "" %}movie/image/{{ movie.title }}.jpg"
+                     onerror='this.src="{% static "" %}movie/image/no-image-available.jpg"' alt="">
                 <div class="card-body">
                 <h3 class="card-title">{{ movie.title }}</h3>
                 <p class="card-text">{{ movie.description }}</p>
@@ -113,8 +113,8 @@
                             <div>
                                 <div style="float:left">
                                     <img style='width:70px;height:130px'
-                                         src="{% static "" %}movie/img/{{ movie.title }}.jpg"
-                                         onerror='this.src="{% static "" %}movie/img/no-image-available.jpg"'
+                                         src="{% static "" %}movie/image/{{ movie.title }}.jpg"
+                                         onerror='this.src="{% static "" %}movie/image/no-image-available.jpg"'
                                          alt="">
                                 </div>
                                 <div style="margin: 2px; margin-left: 5px">
