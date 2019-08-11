@@ -1,15 +1,16 @@
-from django.http import HttpResponse, Http404
-from django.shortcuts import render
+from django.contrib import auth
+from django.contrib.auth import authenticate
+from django.contrib.auth.models import User
+from django.shortcuts import render, redirect
 import urllib.request
-from urllib import parse
 import json
-import random
 
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 from django.shortcuts import render
 
 # Create your views here.
+
 from movie.models import NewMovie, NewCustomer, Ratings, Genre
 
 """
@@ -62,9 +63,42 @@ return render(None)
 """
 
 
+def login(request):
+    if request.method == "POST":
+        user = authenticate(
+            username=request.POST["lg_username"],
+            password=request.POST["lg_password"])
+        if user:
+            auth.login(request, user)
+            return redirect('movie:main')
+    return render(request, 'movie/login.html')
+
+
+def register(request):
+    if request.method == "POST":
+        if request.POST["reg_password"] == request.POST["reg_password_confirm"]:
+            user = User.objects.create_user(
+                username=request.POST["reg_username"],
+                password=request.POST["reg_password"],
+                email=request.POST['reg_email'], )
+
+            nickname = request.POST["reg_nickname"]
+            gender = request.POST['reg_gender']
+            age = int(request.POST['reg_age'])
+            profile = NewCustomer(user=user, nickname=nickname, gender=gender[0], age=age)
+            profile.save()
+            auth.login(request, user)
+            return redirect('movie:main')
+    return render(request, 'movie/register.html')
+
+
+def forgot_password(request):
+    return render(request, 'movie/register.html')
+
+
 def index(request):
     movies = NewMovie.objects.order_by('-rate').order_by('-votes')[:4]
-    context = {'movies': movies}
+    context = {'movies': movies, 'customer': request.user}
     return render(request, 'movie/index.html', context)
 
 
@@ -76,13 +110,20 @@ def main(request):
     genre_list.remove('unknown')
 
     movies = NewMovie.objects.order_by('-rate').order_by('-votes')[:6]
-    context = {'movies': movies, 'genres': genre_list}
+    context = {'movies': movies, 'genres': genre_list, 'customer': request.user}
     return render(request, "movie/main.html", context)
 
 
 def list(request, genre):
+    genre_list = []
+    genres = Genre.objects.values_list('name')
+    for g in genres:
+        genre_list.append(str(g).strip("(',')").strip('""'))
+    genre_list.remove('unknown')
+
     # 장르별 출력
-    movies = NewMovie.objects.filter(genre=genre)
+    choiced_genre = Genre.objects.get(name=genre)
+    movies = NewMovie.objects.filter(genre_set=choiced_genre)
     # item number per page
     num_page = 8
     paginator = Paginator(movies, num_page)
@@ -96,44 +137,39 @@ def list(request, genre):
         # If page is out of range (e.g. 9999), deliver last page of results.
         contacts = paginator.page(paginator.num_pages)
 
-    context = {'movies': movies, "genre": genre, 'contacts': contacts}
+    context = {'movies': movies, "genre": choiced_genre, 'contacts': contacts, 'genres': genre_list,
+               'customer': request.user}
     return render(request, "movie/sidebar.html", context)
 
 
 # 고객정보 넘겨주는거확인
 def detail(request, movie_id, customer_id):
-    try:
-        movie = NewMovie.objects.get(pk=movie_id)
-        customer = NewCustomer.objects.get(pk=customer_id)
-    except NewMovie.objects.DoesNotExsit:
-        raise Http404("Movie does not exist")
+    genre_list=[]
+    genres=Genre.objects.values_list('name')
+    for g in genres:
+        genre_list.append(str(g).strip("(',')").strip('""'))
+    genre_list.remove('unknown')
 
-    str = customer.id + "/" + movie.id + "/"
+    id = NewCustomer.objects.get(user=User.objects.get(id=customer_id)).id
+    movie = NewMovie.objects.get(id=movie_id)
+    string = str(id) + "/" + str(movie_id) + "/"
     # query = urllib.parse.quote(str)
     # url = 'http://101.101.167.97:8000/movie-recommend/customerMovie/' + query + '/customer1/movie_list/'
-    url = 'http://localhost:8000/movie-recommend/recommend' + str  # query
+    url = 'http://localhost:8000/movie-recommend/recommend/' + string  # query
 
     content = urllib.request.urlopen(url).read().decode('utf-8')
     temp = json.loads(content)
-    print(temp[0])
     recommend_list = []
-    for i in range(20):
+    for i in range(len(temp[0])):
         recommend_list.append(temp[0][repr(i)])
-        if repr(i + 1) not in temp[0]:
-            break
 
     movie_list = []
-    # 장르부분확인
+
     for j in recommend_list:
-        if movie.genre in j['genre'] and len(movie_list) != 3:
-            movie_list.append(j)
+        m = NewMovie.objects.get(id=j['movie_id'])
+        movie_list.append(m)
 
-    for k in range(3 - len(movie_list)):
-        choice = random.choice(recommend_list)
-        if choice not in movie_list:
-            movie_list.append(choice)
-
-    return render(request, "movie/detail.html", {'movie': movie, 'recommended_movie': movie_list})
+    return render(request, "movie/detail.html", {'genres':genre_list,'movie': movie, 'recommended_movie': movie_list})
 
 
 def column(request):

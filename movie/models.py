@@ -21,7 +21,6 @@ class NewMovie(models.Model):
     id: int = models.AutoField(
         primary_key=True
     )
-
     title: str = models.CharField(
         help_text="영화 제목",
         max_length=256,
@@ -71,6 +70,9 @@ class NewCustomer(models.Model):
     id: int = models.AutoField(
         primary_key=True
     )
+
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+
     gender: str = models.CharField(
         help_text="고객의 성별, M 남성, F 여성",
         max_length=32
