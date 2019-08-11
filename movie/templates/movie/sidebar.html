@@ -65,7 +65,7 @@
         <li class="breadcrumb-item">
             <a href="index.html">Home</a>
         </li>
-        <li class="breadcrumb-item active">{{ genre }}</li>
+        <li class="breadcrumb-item active">{{ genre.name }}</li>
     </ol>
 
     <!-- Content Row -->
@@ -73,27 +73,9 @@
         <!-- Sidebar Column -->
         <div class="col-lg-3 mb-4">
             <div class="list-group">
-                <a href="{% url 'movie:list' "Action" %}" class="list-group-item">Action</a>
-                <a href="{% url 'movie:list' "Adult" %}" class="list-group-item">Adult</a>
-                <a href="{% url 'movie:list' "Adventure" %}" class="list-group-item">Adventure</a>
-                <a href="{% url 'movie:list' "Animation" %}" class="list-group-item">Animation</a>
-                <a href="{% url 'movie:list' "Biography" %}" class="list-group-item">Biography</a>
-                <a href="{% url 'movie:list' "Comedy" %}" class="list-group-item">Comedy</a>
-                <a href="{% url 'movie:list' "Crime" %}" class="list-group-item">Crime</a>
-                <a href="{% url 'movie:list' "Documentary" %}" class="list-group-item">Documentary </a>
-                <a href="{% url 'movie:list' "Drama" %}" class="list-group-item">Drama</a>
-                <a href="{% url 'movie:list' "Family" %}" class="list-group-item">Family</a>
-                <a href="{% url 'movie:list' "History" %}" class="list-group-item">History</a>
-                <a href="{% url 'movie:list' "Horror" %}" class="list-group-item">Horror</a>
-                <a href="{% url 'movie:list' "Music" %}" class="list-group-item">Music</a>
-                <a href="{% url 'movie:list' "Musical" %}" class="list-group-item">Musical</a>
-                <a href="{% url 'movie:list' "Mystery" %}" class="list-group-item">Mystery</a>
-                <a href="{% url 'movie:list' "Romance" %}" class="list-group-item">Romance</a>
-                <a href="{% url 'movie:list' "Sci-Fi" %}" class="list-group-item">Sci-Fi</a>
-                <a href="{% url 'movie:list' "Sport" %}" class="list-group-item">Sport</a>
-                <a href="{% url 'movie:list' "Thriller" %}" class="list-group-item">Thriller</a>
-                <a href="{% url 'movie:list' "War" %}" class="list-group-item">War</a>
-                <a href="{% url 'movie:list' "Western" %}" class="list-group-item">Western</a>
+                {% for genre in genres %}
+                    <a href="{% url 'movie:list' genre %}" class="list-group-item">{{ genre }}</a>
+                {% endfor %}
             </div>
         </div>
         <!-- Content Column -->
@@ -106,13 +88,13 @@
                     {% for movie in contacts %}
                         <div class="col-lg-3 col-md-4 col-sm-6 portfolio-item">
                             <div class="card h-100">
-                                <img style="width:100%; height:30%" class="card-img-top img-fluid" src="{% static "" %}movie/img/{{ movie.title }}.jpg"
-                                     onerror='this.src="{% static "" %}movie/img/no-image-available.jpg"' alt="">
+                                <img style="width:100%; height:40%" class="card-img-top img-fluid"
+                                     src="{% static "" %}movie/image/{{ movie.title }}/{{ movie.title }}_1.jpg"
+                                     onerror='this.src="{% static "" %}movie/image/noimage.jpg"' alt="">
                                 <div class="card-body">
                                     <h4 class="card-title">
-                                        <a href="{% url 'movie:detail' movie.id %}">{{ movie.title }}</a>
+                                        <a href="{% url 'movie:detail' movie.id customer.id %}">{{ movie.title }}</a>
                                     </h4>
-                                    <h5>{{ movie.director }}</h5>
                                     <p class="card-text">{{ movie.description }}</p>
                                 </div>
                             </div>

@@ -72,7 +72,7 @@
                 <div class="card h-100">
                     <img style="width:100%; height:300px" class="card-img-top img-fluid"
                          src="{% static "" %}movie/image/{{ movie.title }}/{{ movie.title }}_1.jpg"
-                         onerror='this.src="{% static "" %}movie/image/no-image-available.jpg"'
+                         onerror='this.src="{% static "" %}movie/image/{{ movie.title }}/{{ movie.title }}_2.jpg"'
                          alt="">
                     {# <img class="card-img-top" src="http://placehold.it/500x325" alt="">#}
                     <div class="card-body">
@@ -84,7 +84,7 @@
                         <p class="card-text" style="height: 60%">{{ movie.description }}</p>
                     </div>
                     <div class="card-footer">
-                        <a href="{% url 'movie:detail' movie.id %}" class="btn btn-primary">자세히 보기</a>
+                        <a href="{% url 'movie:detail' movie.id customer.id %}" class="btn btn-primary">자세히 보기</a>
                     </div>
                 </div>
             </div>

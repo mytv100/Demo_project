@@ -85,10 +85,11 @@
                         {% else %}
                             <div class="carousel-item">
                         {% endif %}
-                    <a href="{% url 'movie:detail' movie.id %}">
-                        <img style="width:100%; height:300px" class="d-block img-fluid"
+                    <a href="{% url 'movie:detail' movie.id customer.id %}">
+                        <img style="width:100%; height:500px" class="d-block img-fluid"
                              src="{% static "" %}movie/image/{{ movie.title }}/{{ movie.title }}_1.jpg"
-                             onerror='this.src="{% static "" %}movie/image/no-image-available.jpg"' alt="">
+                             onerror='this.src="{% static "" %}movie/image/{{ movie.title }}/{{ movie.title }}_2.jpg"'
+                             alt="">
                     </a>
                     </div>
                     {% endfor %}
@@ -111,11 +112,12 @@
                             <div class="card h-100">
                                 <img style="width:100%; height:50%" class="card-img-top img-fluid"
                                      src="{% static "" %}movie/image/{{ movie.title }}/{{ movie.title }}_1.jpg"
-                                     onerror='this.src="{% static "" %}movie/image/no-image-available.jpg"' alt="">
+                                     onerror='this.src="{% static "" %}movie/image/{{ movie.title }}/{{ movie.title }}_2.jpg"'
+                                     alt="">
                                 <div class="card-body">
                                     <div style="display: table; height: 40%; width: 100%; ">
                                         <h4 class="card-title" style="display:table-cell;
-                            vertical-align: middle; width:100%"><a href="{% url 'movie:detail' movie.id %}">
+                            vertical-align: middle; width:100%"><a href="{% url 'movie:detail' movie.id customer.id %}">
                                             {{ movie.title }}
                                         </a></h4>
                                     </div>
@@ -123,7 +125,7 @@
                                     <p class="card-text" style="height: 60%">{{ movie.description }}</p>
                                 </div>
                                 <div class="card-footer" style="height: 10%">
-                                    <a href="{% url 'movie:detail' movie.id %}" class="btn btn-primary"
+                                    <a href="{% url 'movie:detail' movie.id customer.id %}" class="btn btn-primary"
                                        style="width:100%">자세히
                                         보기</a>
                                     {# <small class="text-muted">&#9733; &#9733; &#9733; &#9733; &#9734;</small> #}
