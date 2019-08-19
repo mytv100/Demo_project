@@ -10,7 +10,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>명화 극장</title>
+    <title>Netflick</title>
 
     <!-- Bootstrap core CSS -->
     <link href='{% static "movie/vendor/bootstrap/css/bootstrap.min.css" %}' rel="stylesheet">
@@ -26,7 +26,7 @@
 <!-- Navigation -->
 <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark fixed-top">
     <div class="container">
-        <a class="navbar-brand" href="{% url 'movie:index' %}">명화 극장</a>
+        <a class="navbar-brand" href="{% url 'movie:index' %}">Netflick</a>
         <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse"
                 data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false"
                 aria-label="Toggle navigation">
@@ -35,18 +35,18 @@
         <div class="collapse navbar-collapse" id="navbarResponsive">
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item active">
-                    <a class="nav-link" href="{% url 'movie:index' %}">Home
+                    <a class="nav-link" href="{% url 'movie:main' %}">Home
                         <span class="sr-only">(current)</span>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'movie:index' %}">About</a>
+                    <a class="nav-link" href="{% url 'movie:main' %}">About</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'movie:index' %}">Services</a>
+                    <a class="nav-link" href="{% url 'movie:main' %}">Services</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'movie:index' %}">Contact</a>
+                    <a class="nav-link" href="{% url 'movie:index' %}">LogOut</a>
                 </li>
             </ul>
         </div>
@@ -57,13 +57,13 @@
 <div class="container">
 
     <!-- Page Heading/Breadcrumbs -->
-    <h1 class="mt-4 mb-3">명화 극장
+    <h1 class="mt-4 mb-3">Netflick
         <small>장르별</small>
     </h1>
 
     <ol class="breadcrumb">
         <li class="breadcrumb-item">
-            <a href="index.html">Home</a>
+            <a href="main.html">Home</a>
         </li>
         <li class="breadcrumb-item active">{{ genre.name }}</li>
     </ol>
@@ -129,7 +129,7 @@
 <!-- Footer -->
 <footer class="py-5 bg-dark">
     <div class="container">
-        <p class="m-0 text-center text-white">Copyright &copy; 명화 극장 2019</p>
+        <p class="m-0 text-center text-white">Copyright &copy; Netflick 2019</p>
     </div>
     <!-- /.container -->
 </footer>

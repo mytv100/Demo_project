@@ -9,104 +9,97 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>명화 극장</title>
+    <title>Netflick</title>
 
     <!-- Bootstrap core CSS -->
     <link href='{% static "movie/vendor/bootstrap/css/bootstrap.min.css" %}' rel="stylesheet">
 
-    <!-- Custom styles for this template -->
-    <link href='{% static "movie/css/shop-homepage.css" %}' rel="stylesheet">
+    <!-- Custom fonts for this template -->
+    <link href='{% static "movie/vendor/fontawesome-free/css/all.min.css" %}' rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Varela+Round" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+          rel="stylesheet">
 
-    <script src='{% static "movie/vendor/jquery/jquery.min.js" %}'></script>
-    <script src='{% static "movie/vendor/bootstrap/js/bootstrap.min.js" %}'></script>
+
+    <!-- Custom styles for this template -->
+    <link href='{% static "movie/css/grayscale.min.css" %}' rel="stylesheet">
 
 </head>
 
-<body>
+<body id="page-top">
 
 <!-- Navigation -->
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+<nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
     <div class="container">
-        <a class="navbar-brand" href="{% url 'movie:index' %}">명화 극장</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
-                aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
+        <a class="navbar-brand js-scroll-trigger" href="#page-top">Netflick</a>
+        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse"
+                data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false"
+                aria-label="Toggle navigation">
+            Menu
+            <i class="fas fa-bars"></i>
         </button>
         <div class="collapse navbar-collapse" id="navbarResponsive">
             <ul class="navbar-nav ml-auto">
-                <li class="nav-item active">
-                    <a class="nav-link" href="{% url 'movie:index' %}">Home
-                        <span class="sr-only">(current)</span>
-                    </a>
+                <li class="nav-item">
+                    <a class="nav-link js-scroll-trigger" href="{% url 'movie:login' %}">SignIn</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'movie:index' %}">About</a>
+                    <a class="nav-link js-scroll-trigger" href="{% url 'movie:register' %}">SignUp</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'movie:index' %}">Services</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'movie:index' %}">Contact</a>
+                    <a class="nav-link js-scroll-trigger" href="{% url 'movie:index' %}">Contact</a>
                 </li>
             </ul>
         </div>
     </div>
 </nav>
 
-<!-- Page Content -->
-<div class="container">
-
-    <!-- Jumbotron Header -->
-
-    <a href="{% url 'movie:main' %}">
-        <header class="jumbotron my-4">
-            <h1 class="display-3">Welcome to 명화 극장!</h1>
-            {#        <img class="card-img-top" src="http://placehold.it/500x325" alt="">#}
-        </header>
-    </a>
-    <!--<a href="#" class="btn btn-primary btn-lg">Call to action!</a>-->
-    <!-- Page Features -->
-    <div class="row text-center">
-        {% for movie in movies %}
-            <div class="col-lg-3 col-md-6 mb-4">
-                <div class="card h-100">
-                    <img style="width:100%; height:300px" class="card-img-top img-fluid"
-                         src="{% static "" %}movie/image/{{ movie.title }}/{{ movie.title }}_1.jpg"
-                         onerror='this.src="{% static "" %}movie/image/{{ movie.title }}/{{ movie.title }}_2.jpg"'
-                         alt="">
-                    {# <img class="card-img-top" src="http://placehold.it/500x325" alt="">#}
-                    <div class="card-body">
-                        <div style="display: table; height: 40%; width: 100%; ">
-                            <h5 class="card-title" style="display:table-cell;
-                            vertical-align: middle; width:100%">{{ movie.title }}</h5>
-                        </div>
-                        <hr/>
-                        <p class="card-text" style="height: 60%">{{ movie.description }}</p>
-                    </div>
-                    <div class="card-footer">
-                        <a href="{% url 'movie:detail' movie.id customer.id %}" class="btn btn-primary">자세히 보기</a>
-                    </div>
-                </div>
-            </div>
-        {% endfor %}
-
+<!-- Header -->
+<header class="masthead">
+    <div class="container d-flex h-100 align-items-center">
+        <div class="mx-auto text-center">
+            <h1 class="mx-auto my-0 text-uppercase">Netflick</h1>
+            <h2 class="text-white-50 mx-auto mt-2 mb-5">Movie Service For Maximum Satisfaction At Minimum Cost</h2>
+            <a href="{% url 'movie:login' %}" class="btn btn-primary js-scroll-trigger">
+                Get Started
+            </a>
+        </div>
     </div>
-    <!-- /.row -->
+</header>
 
-</div>
-<!-- /.container -->
+<!-- About Section -->
+<section id="about" class="about-section text-center">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <h2 class="text-white mb-4">Enjoy the movies</h2>
+                <p class="text-white-50">Netflick is a site where you can watch movies for free</p>
+            </div>
+        </div>
+
+        <img src='{% static "movie/image/noimage.jpg" %}' class="img-fluid" alt="">
+    </div>
+</section>
+
 
 <!-- Footer -->
-<footer class="py-5 bg-dark">
+<footer class="bg-black small text-center text-white-50">
     <div class="container">
-        <p class="m-0 text-center text-white">Copyright &copy; 명화 극장 2019</p>
+        Copyright &copy; Your Website 2019
     </div>
-    <!-- /.container -->
 </footer>
 
 <!-- Bootstrap core JavaScript -->
 <link href='{% static "movie/vendor/jquery/jquery.min.js" %}' rel="stylesheet">
 <link href='{% static "movie/vendor/bootstrap/js/bootstrap.bundle.min.js" %}' rel="stylesheet">
+<!-- Plugin JavaScript -->
+
+<link href='{% static "movie/vendor/jquery-easing/jquery.easing.min.js" %}' rel="stylesheet">
+<link href='{% static "movie/js/grayscale.min.js" %}' rel="stylesheet">
+
+
+<!-- Custom scripts for this template -->
+<script src=""></script>
 
 </body>
 

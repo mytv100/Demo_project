@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>명화 극장</title>
+    <title>Netflick</title>
 
     <!-- Bootstrap core CSS -->
     <link href='{% static "movie/vendor/bootstrap/css/bootstrap.min.css" %}' rel="stylesheet">
@@ -27,7 +27,7 @@
 <!-- Navigation -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
     <div class="container">
-        <a class="navbar-brand" href="{% url 'movie:index' %}">명화 극장</a>
+        <a class="navbar-brand" href="{% url 'movie:main' %}">Netflick</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
                 aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -35,18 +35,18 @@
         <div class="collapse navbar-collapse" id="navbarResponsive">
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item active">
-                    <a class="nav-link" href="{% url 'movie:index' %}">Home
+                    <a class="nav-link" href="{% url 'movie:main' %}">Home
                         <span class="sr-only">(current)</span>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'movie:index' %}">About</a>
+                    <a class="nav-link" href="{% url 'movie:main' %}">About</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'movie:index' %}">Services</a>
+                    <a class="nav-link" href="{% url 'movie:main' %}">Services</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'movie:index' %}">Contact</a>
+                    <a class="nav-link" href="{% url 'movie:index' %}">LogOut</a>
                 </li>
             </ul>
         </div>
@@ -76,8 +76,6 @@
                 <div class="card-body">
                 <h3 class="card-title">{{ movie.title }}</h3>
                 <p class="card-text">{{ movie.description }}</p>
-                {#                        <span class="text-warning">&#9733; &#9733; &#9733; &#9733; &#9734;</span>#}
-                {#                        4.0 stars#}
             {% else %}
                 <p> No </p>
             {% endif %}
@@ -92,19 +90,22 @@
                 <div class="card-body">
                     {% if recommended_movie %}
                         {% for movie in recommended_movie %}
-                            <div style="display: table">
-                                <div style="display:table-column">
+                            <div style="display: inline;">
+
+                                <div style="display: inline-block;">
                                     <img style='width:70px;height:100px'
                                          src="{% static "" %}movie/image/{{ movie.title }}/{{ movie.title }}_1.jpg"
                                          onerror='this.src="{% static "" %}movie/image/noimage.jpg"' alt="">
                                 </div>
-                                <div style="display:table-column;margin: 2px; margin-left: 5px;">
-                                    <h4 style="display: table-row">{{ movie.title }}</h4>
-                                    <p style="display: table-row">{{ movie.description }}</p>
-                                    <hr>
-                                </div>
-                            </div>
 
+                                <div style="display: inline-block;">
+                                    <a href="{% url 'movie:detail' movie.id customer.id %}">
+                                        <h4>{{ movie.title }}</h4></a>
+                                    <p>{{ movie.description }}</p>
+                                </div>
+                                <hr>
+
+                            </div>
                         {% endfor %}
                     {% else %}
                         <p> No </p>
@@ -122,7 +123,7 @@
 <!-- Footer -->
 <footer class="py-5 bg-dark">
     <div class="container">
-        <p class="m-0 text-center text-white">Copyright &copy; 명화 극장 2019</p>
+        <p class="m-0 text-center text-white">Copyright &copy; Netflick 2019</p>
     </div>
     <!-- /.container -->
 </footer>

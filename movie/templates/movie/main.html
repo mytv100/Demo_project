@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>명화 극장</title>
+    <title>Netflick</title>
 
     <!-- Bootstrap core CSS -->
     <link href='{% static "movie/vendor/bootstrap/css/bootstrap.min.css" %}' rel="stylesheet">
@@ -28,7 +28,7 @@
 <!-- Navigation -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
     <div class="container">
-        <a class="navbar-brand" href="{% url 'movie:index' %}">명화 극장</a>
+        <a class="navbar-brand" href="{% url 'movie:main' %}">Netflick</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
                 aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -36,18 +36,18 @@
         <div class="collapse navbar-collapse" id="navbarResponsive">
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item active">
-                    <a class="nav-link" href="{% url 'movie:index' %}">Home
+                    <a class="nav-link" href="{% url 'movie:main' %}">Home
                         <span class="sr-only">(current)</span>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'movie:index' %}">About</a>
+                    <a class="nav-link" href="{% url 'movie:main' %}">About</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'movie:index' %}">Services</a>
+                    <a class="nav-link" href="{% url 'movie:main' %}">Services</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'movie:index' %}">Contact</a>
+                    <a class="nav-link" href="{% url 'movie:index' %}">LogOut</a>
                 </li>
             </ul>
         </div>
@@ -61,7 +61,7 @@
 
         <div class="col-lg-3">
 
-            <h1 class="my-4">명화 극장</h1>
+            <h1 class="my-4">Netflick</h1>
             <div class="list-group">
                 {% for genre in genres %}
                     <a href="{% url 'movie:list' genre %}" class="list-group-item">{{ genre }}</a>
@@ -88,8 +88,7 @@
                     <a href="{% url 'movie:detail' movie.id customer.id %}">
                         <img style="width:100%; height:500px" class="d-block img-fluid"
                              src="{% static "" %}movie/image/{{ movie.title }}/{{ movie.title }}_1.jpg"
-                             onerror='this.src="{% static "" %}movie/image/{{ movie.title }}/{{ movie.title }}_2.jpg"'
-                             alt="">
+                             onerror='this.src="{% static "" %}movie/image/noimage.jpg"' alt="">
                     </a>
                     </div>
                     {% endfor %}
@@ -112,8 +111,7 @@
                             <div class="card h-100">
                                 <img style="width:100%; height:50%" class="card-img-top img-fluid"
                                      src="{% static "" %}movie/image/{{ movie.title }}/{{ movie.title }}_1.jpg"
-                                     onerror='this.src="{% static "" %}movie/image/{{ movie.title }}/{{ movie.title }}_2.jpg"'
-                                     alt="">
+                                     onerror='this.src="{% static "" %}movie/image/noimage.jpg"' alt="">
                                 <div class="card-body">
                                     <div style="display: table; height: 40%; width: 100%; ">
                                         <h4 class="card-title" style="display:table-cell;
@@ -148,7 +146,7 @@
     <!-- Footer -->
     <footer class="py-5 bg-dark">
         <div class="container">
-            <p class="m-0 text-center text-white">Copyright &copy; 명화 극장 2019</p>
+            <p class="m-0 text-center text-white">Copyright &copy; Netflick 2019</p>
         </div>
         <!-- /.container -->
     </footer>

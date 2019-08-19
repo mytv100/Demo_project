@@ -98,7 +98,7 @@ def forgot_password(request):
 
 def index(request):
     movies = NewMovie.objects.order_by('-rate').order_by('-votes')[:4]
-    context = {'movies': movies, 'customer': request.user}
+    context = {'movies': movies}
     return render(request, 'movie/index.html', context)
 
 
@@ -169,7 +169,7 @@ def detail(request, movie_id, customer_id):
         m = NewMovie.objects.get(id=j['movie_id'])
         movie_list.append(m)
 
-    return render(request, "movie/detail.html", {'genres':genre_list,'movie': movie, 'recommended_movie': movie_list})
+    return render(request, "movie/detail.html", {'genres':genre_list,'movie': movie, 'recommended_movie': movie_list, 'customer': request.user})
 
 
 def column(request):
