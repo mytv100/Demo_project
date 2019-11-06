@@ -9,12 +9,12 @@ urlpatterns = [
 
     path('login', views.login, name='login'),
     path('register', views.register, name='register'),
-   # path('forgot_password', views.forgot_password, name='forgot_password'),
+    # path('forgot_password', views.forgot_password, name='forgot_password'),
 
     path('<str:genre>/list', views.list, name='list'),
     path('<int:movie_id>/<int:customer_id>/', views.detail, name='detail'),
 
-    path('column',views.column, name='column'),
-    path('sidebar',views.sidebar, name='sidebar'),
-    path('item',views.item, name='item'),
+    path('column', views.column, name='column'),
+    path('sidebar', views.sidebar, name='sidebar'),
+    path('item', views.item, name='item'),
 ]

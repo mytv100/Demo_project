@@ -3,6 +3,7 @@ from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 import urllib.request
+import urllib.parse
 import json
 
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
@@ -144,8 +145,8 @@ def list(request, genre):
 
 # 고객정보 넘겨주는거확인
 def detail(request, movie_id, customer_id):
-    genre_list=[]
-    genres=Genre.objects.values_list('name')
+    genre_list = []
+    genres = Genre.objects.values_list('name')
     for g in genres:
         genre_list.append(str(g).strip("(',')").strip('""'))
     genre_list.remove('unknown')
@@ -153,7 +154,7 @@ def detail(request, movie_id, customer_id):
     id = NewCustomer.objects.get(user=User.objects.get(id=customer_id)).id
     movie = NewMovie.objects.get(id=movie_id)
     string = str(id) + "/" + str(movie_id) + "/"
-    # query = urllib.parse.quote(str)
+    # query = urllib.parse.quote(string)
     # url = 'http://101.101.167.97:8000/movie-recommend/customerMovie/' + query + '/customer1/movie_list/'
     url = 'http://localhost:8000/movie-recommend/recommend/' + string  # query
 
@@ -169,7 +170,8 @@ def detail(request, movie_id, customer_id):
         m = NewMovie.objects.get(id=j['movie_id'])
         movie_list.append(m)
 
-    return render(request, "movie/detail.html", {'genres':genre_list,'movie': movie, 'recommended_movie': movie_list, 'customer': request.user})
+    return render(request, "movie/detail.html",
+                  {'genres': genre_list, 'movie': movie, 'recommended_movie': movie_list, 'customer': request.user})
 
 
 def column(request):
